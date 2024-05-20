@@ -4,24 +4,25 @@ using UnityEngine;
 
 public class Movimientopersonaje : MonoBehaviour
 {
-    public float speed = 1.0f;
-    public float RotationSpeed = 1.0f;
-    void Start()
-    {
-        
-    }
+    public float speed = 5f; // Velocidad de movimiento del jugador
+    public float lookSpeed = 2f; // Velocidad de rotación de la cámara
 
-    // Update is called once per frame
     void Update()
     {
-        float horizontal = Input.GetAxis("Horizontal");
-        float vertical = Input.GetAxis("Vertical");
+        // Control del movimiento del jugador
+        float moveHorizontal = Input.GetAxis("Horizontal");
+        float moveVertical = Input.GetAxis("Vertical");
 
-        transform.Translate(new Vector3(horizontal, 0.0f, vertical) * Time.deltaTime);
+        Vector3 movement = new Vector3(moveHorizontal, 0.0f, moveVertical);
+        transform.Translate(movement * speed * Time.deltaTime);
 
-        float rotacionY = Input.GetAxis("Mouse X");
+        // Control de la rotación de la cámara con el ratón
+        float mouseX = Input.GetAxis("Mouse X");
+        float mouseY = Input.GetAxis("Mouse Y");
 
-        transform.Rotate(new Vector3(0, rotacionY * Time.deltaTime * RotationSpeed, 0));
+        transform.Rotate(Vector3.up * mouseX * lookSpeed);
 
+        // Rotación de la cámara alrededor del jugador
+        Camera.main.transform.RotateAround(transform.position, transform.right, -mouseY * lookSpeed);
     }
 }
